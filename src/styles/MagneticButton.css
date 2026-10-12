@@ -1,0 +1,79 @@
+/* Pill buttons. --mx / --my are set by the useMagnetic hook. */
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 24px;
+  border-radius: var(--radius-pill);
+  font-size: 0.95rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  isolation: isolate;
+  transform: translate3d(var(--mx, 0px), var(--my, 0px), 0) scale(var(--press, 1));
+  transition: transform var(--speed) var(--ease);
+}
+
+.btn:active {
+  --press: 0.96;
+}
+
+.btn__icon {
+  flex-shrink: 0;
+  transition: transform var(--speed) var(--ease);
+}
+
+.btn:hover .btn__icon {
+  transform: translate3d(3px, 0, 0);
+}
+
+/* Primary: solid accent with a light sheen that sweeps across on hover */
+.btn--primary {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+.btn--primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.45) 50%, transparent 70%);
+  transform: translateX(-120%);
+  transition: transform 700ms var(--ease);
+}
+
+.btn--primary:hover::before {
+  transform: translateX(120%);
+}
+
+/* Ghost: outlined, fills softly with the accent tint on hover */
+.btn--ghost {
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text);
+}
+
+.btn--ghost::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--accent-soft);
+  opacity: 0;
+  transition: opacity var(--speed) var(--ease);
+}
+
+.btn--ghost:hover::before {
+  opacity: 1;
+}
+
+/* Compact size used inside project cards */
+.btn--small {
+  min-height: 40px;
+  padding: 0 18px;
+  font-size: 0.875rem;
+}

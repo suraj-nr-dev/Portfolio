@@ -1,0 +1,75 @@
+/* The outer elements are moved by JS (transform); the inner <span>s
+   handle scaling and fading so the two transforms never fight. */
+.cursor__dot,
+.cursor__ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: var(--z-cursor);
+  pointer-events: none;
+  will-change: transform;
+}
+
+.cursor__dot span,
+.cursor__ring span {
+  display: block;
+  border-radius: 50%;
+  opacity: 0;
+  transition:
+    transform var(--speed) var(--ease),
+    opacity var(--speed) var(--ease);
+}
+
+.cursor__dot span {
+  width: 8px;
+  height: 8px;
+  margin: -4px 0 0 -4px;
+  background: var(--accent);
+}
+
+.cursor__ring span {
+  width: 36px;
+  height: 36px;
+  margin: -18px 0 0 -18px;
+  border: 1.5px solid var(--accent);
+}
+
+/* Shown after the first mouse move, hidden when the pointer leaves the page */
+.cursor-visible .cursor__dot span {
+  opacity: 1;
+}
+
+.cursor-visible .cursor__ring span {
+  opacity: 0.6;
+}
+
+/* Grow over links, buttons and other hoverable elements */
+.cursor-hover .cursor__ring span {
+  transform: scale(1.75);
+  opacity: 0.9;
+}
+
+.cursor-hover .cursor__dot span {
+  transform: scale(0.5);
+}
+
+.cursor-down .cursor__ring span {
+  transform: scale(0.8);
+}
+
+/* Step aside inside text fields so the native text caret is used */
+.cursor-text .cursor__dot span,
+.cursor-text .cursor__ring span {
+  opacity: 0;
+}
+
+/* Hide the native cursor only while the custom one is active */
+.has-custom-cursor,
+.has-custom-cursor * {
+  cursor: none !important;
+}
+
+.has-custom-cursor input,
+.has-custom-cursor textarea {
+  cursor: text !important;
+}

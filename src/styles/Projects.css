@@ -1,0 +1,161 @@
+.projects__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+/* Perspective lives on the wrapper so the card can rotate in 3D */
+.projects__item {
+  perspective: 1100px;
+}
+
+.projects__item--featured {
+  grid-column: 1 / -1;
+}
+
+/* ---------- 3D tilt (variables are set by the useTilt hook) ---------- */
+.tilt {
+  transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  transition: transform 600ms var(--ease);
+  overflow: hidden;
+}
+
+.tilt.is-tilting {
+  transition-duration: 120ms;
+}
+
+/* The card clips its children, so keep the hover border inside the edge */
+.tilt::after {
+  inset: 0;
+}
+
+/* Glare: a soft light that moves with the pointer (transform + opacity) */
+.tilt__glare {
+  position: absolute;
+  top: -180px;
+  left: -180px;
+  width: 360px;
+  height: 360px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent-soft), transparent 65%);
+  opacity: 0;
+  pointer-events: none;
+  transform: translate3d(var(--gx, 0px), var(--gy, 0px), 0);
+  transition: opacity var(--speed) var(--ease);
+}
+
+.tilt.is-tilting .tilt__glare {
+  opacity: 1;
+}
+
+/* ---------- Card ---------- */
+.project-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: clamp(22px, 3vw, 30px);
+}
+
+.project-card__main {
+  position: relative;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+}
+
+.project-card__icon {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  transition: transform var(--speed) var(--ease);
+}
+
+.project-card:hover .project-card__icon {
+  transform: translate3d(0, -4px, 0) rotate(-6deg);
+}
+
+.project-card__title {
+  margin-top: 18px;
+  font-size: clamp(1.25rem, 2.4vw, 1.5rem);
+}
+
+.project-card__description {
+  margin-top: 10px;
+  color: var(--text-muted);
+}
+
+.project-card__tech {
+  margin-top: 18px;
+}
+
+.project-card__tech .chip {
+  padding: 4px 12px;
+  font-size: 0.8125rem;
+}
+
+.project-card__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: auto;
+  padding-top: 22px;
+}
+
+/* ---------- Featured card: details on the left, highlights on the right ---------- */
+.projects__item--featured .project-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+  gap: clamp(24px, 4vw, 48px);
+  background:
+    radial-gradient(circle at 0% 0%, var(--accent-soft), transparent 55%),
+    var(--surface);
+}
+
+.projects__item--featured .project-card__title {
+  font-size: clamp(1.5rem, 3.2vw, 2rem);
+}
+
+.project-card__highlights {
+  position: relative;
+  display: grid;
+  align-content: center;
+  gap: 16px;
+  color: var(--text-muted);
+}
+
+.project-card__highlights li {
+  display: flex;
+  gap: 12px;
+}
+
+.project-card__highlights svg {
+  flex-shrink: 0;
+  margin-top: 4px;
+  color: var(--accent);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 959px) {
+  .projects__grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* 3 small cards in 2 columns: let the last one span the full row */
+  .projects__item:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .projects__item--featured .project-card {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 639px) {
+  .projects__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

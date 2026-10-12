@@ -1,0 +1,132 @@
+.contact__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  align-items: start;
+  gap: clamp(32px, 6vw, 80px);
+}
+
+/* ---------- Details ---------- */
+.contact__details {
+  display: grid;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.contact__details li {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.contact__detail-icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  transition: transform var(--speed) var(--ease);
+}
+
+.contact__details li:hover .contact__detail-icon {
+  transform: rotate(-8deg) scale(1.08);
+}
+
+.contact__social {
+  display: flex;
+  gap: 10px;
+  margin-top: 28px;
+}
+
+/* ---------- Form ---------- */
+.contact__form {
+  display: grid;
+  gap: 20px;
+  padding: clamp(22px, 4vw, 36px);
+}
+
+.field {
+  display: grid;
+  gap: 8px;
+}
+
+.field__label {
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.field__input {
+  width: 100%;
+  padding: 13px 16px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-input);
+  background: var(--bg-raised);
+  color: var(--text);
+}
+
+.field__input:hover {
+  border-color: var(--text-muted);
+}
+
+.field__input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
+  border-color: var(--accent);
+  border-radius: var(--radius-input);
+}
+
+textarea.field__input {
+  min-height: 140px;
+  resize: vertical;
+}
+
+.field.has-error .field__input {
+  border-color: var(--danger);
+}
+
+.field__error {
+  color: var(--danger);
+  font-size: 0.875rem;
+  font-weight: 500;
+  animation: pop-in var(--speed) var(--ease) both;
+}
+
+.contact__submit {
+  justify-self: start;
+}
+
+.contact__status {
+  min-height: 1.5em;
+  font-size: 0.925rem;
+}
+
+.contact__status-message {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: var(--accent);
+  font-weight: 600;
+  animation: pop-in var(--speed) var(--ease) both;
+}
+
+.contact__status-message svg {
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 859px) {
+  .contact__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .contact__submit {
+    justify-self: stretch;
+  }
+}

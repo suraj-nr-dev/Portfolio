@@ -1,0 +1,230 @@
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--z-nav);
+  height: var(--nav-height);
+}
+
+/* Glass layer: fades in after scrolling (kept on a pseudo-element so the
+   mobile menu panel can have its own blur) */
+.navbar::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-bottom: 1px solid var(--border);
+  background: var(--nav-bg);
+  -webkit-backdrop-filter: blur(16px) saturate(160%);
+  backdrop-filter: blur(16px) saturate(160%);
+  opacity: 0;
+  transition: opacity var(--speed) var(--ease);
+}
+
+.navbar.is-scrolled::before,
+.navbar.is-open::before {
+  opacity: 1;
+}
+
+.navbar__inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  height: 100%;
+}
+
+.navbar__brand {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  transition: transform var(--speed) var(--ease);
+}
+
+.navbar__brand span {
+  color: var(--accent);
+}
+
+.navbar__brand:hover {
+  transform: scale(1.08);
+}
+
+.navbar__links {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.navbar__link {
+  position: relative;
+  display: block;
+  padding: 10px 14px;
+  color: var(--text-muted);
+  font-size: 0.925rem;
+  font-weight: 600;
+}
+
+.navbar__link:hover,
+.navbar__link.is-active {
+  color: var(--text);
+}
+
+/* Underline: grows on hover, stays for the active section */
+.navbar__link::after {
+  content: '';
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 4px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--speed) var(--ease);
+}
+
+.navbar__link:hover::after,
+.navbar__link.is-active::after {
+  transform: scaleX(1);
+}
+
+.navbar__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.navbar__theme-icon {
+  display: grid;
+  animation: theme-swap var(--speed) var(--ease) both;
+}
+
+@keyframes theme-swap {
+  from {
+    opacity: 0;
+    transform: rotate(-90deg) scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------- Hamburger (hidden on desktop) ---------- */
+.navbar__toggle {
+  position: relative;
+  display: none;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+}
+
+.navbar__toggle span {
+  position: absolute;
+  left: 13px;
+  width: 16px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--text);
+  transition:
+    transform var(--speed) var(--ease),
+    opacity var(--speed-fast) var(--ease);
+}
+
+.navbar__toggle span:nth-child(1) {
+  top: 15px;
+}
+
+.navbar__toggle span:nth-child(2) {
+  top: 20px;
+}
+
+.navbar__toggle span:nth-child(3) {
+  top: 25px;
+}
+
+/* Bars morph into a close icon */
+.navbar.is-open .navbar__toggle span:nth-child(1) {
+  transform: translateY(5px) rotate(45deg);
+}
+
+.navbar.is-open .navbar__toggle span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.navbar.is-open .navbar__toggle span:nth-child(3) {
+  transform: translateY(-5px) rotate(-45deg);
+}
+
+/* ---------- Mobile / tablet: dropdown panel ---------- */
+@media (max-width: 859px) {
+  .navbar__toggle {
+    display: block;
+  }
+
+  .navbar__nav {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    right: 0;
+    padding: 10px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+    background: var(--bg-raised);
+    box-shadow: var(--shadow);
+    opacity: 0;
+    visibility: hidden;
+    transform: translate3d(0, -12px, 0) scale(0.98);
+    transform-origin: top;
+    transition:
+      opacity var(--speed) var(--ease),
+      transform var(--speed) var(--ease),
+      visibility 0s linear var(--speed);
+  }
+
+  .navbar.is-open .navbar__nav {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition-delay: 0s;
+  }
+
+  .navbar__links {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 2px;
+  }
+
+  /* Links slide in one after another when the menu opens */
+  .navbar__links li {
+    opacity: 0;
+    transform: translate3d(-12px, 0, 0);
+    transition:
+      opacity var(--speed) var(--ease),
+      transform var(--speed) var(--ease);
+  }
+
+  .navbar.is-open .navbar__links li {
+    opacity: 1;
+    transform: none;
+    transition-delay: calc(60ms + var(--i) * 45ms);
+  }
+
+  .navbar__link {
+    padding: 14px 16px;
+    font-size: 1rem;
+  }
+
+  .navbar__link::after {
+    left: 16px;
+    right: auto;
+    bottom: 8px;
+    width: 28px;
+  }
+}

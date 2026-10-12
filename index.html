@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Suraj N | Frontend Developer (React.js)</title>
+    <meta
+      name="description"
+      content="Portfolio of Suraj N, a Frontend Developer in Bengaluru building responsive, component-based web interfaces with React.js, JavaScript, HTML5 and CSS3."
+    />
+    <meta name="theme-color" content="#0b0d0f" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Suraj N | Frontend Developer (React.js)" />
+    <meta
+      property="og:description"
+      content="Responsive React.js interfaces, REST API integration and 4 independent builds."
+    />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Google Fonts: Outfit (display) + Manrope (body) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Outfit:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- Apply the saved theme before first paint to avoid a flash -->
+    <script>
+      try {
+        var savedTheme = localStorage.getItem('portfolio-theme');
+        if (savedTheme === 'light' || savedTheme === 'dark') {
+          document.documentElement.setAttribute('data-theme', savedTheme);
+        }
+      } catch (error) {
+        /* storage unavailable: keep the default dark theme */
+      }
+    </script>
+  </head>
+  <body>
+    <noscript>This portfolio needs JavaScript enabled to display.</noscript>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

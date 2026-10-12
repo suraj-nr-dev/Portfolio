@@ -1,0 +1,322 @@
+.hero {
+  display: flex;
+  align-items: center;
+  min-height: 100dvh;
+  padding: calc(var(--nav-height) + 28px) 0 56px;
+}
+
+.hero__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  align-items: center;
+  gap: 48px;
+}
+
+/* ---------- Entrance: waits for the loader, then staggers in ---------- */
+.hero [data-enter] {
+  opacity: 0;
+  transform: translate3d(0, 26px, 0);
+}
+
+.hero.is-ready [data-enter] {
+  opacity: 1;
+  transform: none;
+  transition:
+    opacity var(--speed-slow) var(--ease) var(--d, 0ms),
+    transform var(--speed-slow) var(--ease) var(--d, 0ms);
+}
+
+/* ---------- Text column ---------- */
+.hero__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 16px 7px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  color: var(--text-muted);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+/* Live availability indicator */
+.hero__badge-dot {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.hero__badge-dot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: pulse-ring 1.8s ease-out infinite;
+}
+
+.hero__title {
+  margin-top: 22px;
+  font-size: clamp(2.9rem, 8.4vw, 5.25rem);
+  font-weight: 700;
+  line-height: 1.02;
+}
+
+.hero__hello {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--text-muted);
+  font-family: var(--font-body);
+  font-size: clamp(1.05rem, 2.2vw, 1.3rem);
+  font-weight: 500;
+  letter-spacing: 0;
+}
+
+.hero__name {
+  display: block;
+}
+
+.hero__role {
+  min-height: 1.35em;
+  margin-top: 14px;
+  color: var(--accent);
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 3.6vw, 2.1rem);
+  font-weight: 600;
+  line-height: 1.35;
+}
+
+.hero__caret {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  margin-left: 4px;
+  background: currentColor;
+  vertical-align: -0.12em;
+  animation: blink 1s steps(1) infinite;
+}
+
+.hero__tagline {
+  max-width: 50ch;
+  margin-top: 16px;
+  color: var(--text-muted);
+  font-size: clamp(1rem, 1.6vw, 1.125rem);
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.hero__social {
+  display: flex;
+  gap: 10px;
+  margin-top: 26px;
+}
+
+/* ---------- Decorative visual ---------- */
+.hero__visual {
+  position: relative;
+  justify-self: center;
+  width: min(100%, 400px);
+  aspect-ratio: 1;
+}
+
+.hero__ring {
+  position: absolute;
+  border-radius: 50%;
+}
+
+.hero__ring--outer {
+  inset: 0;
+  border: 1px dashed var(--border-strong);
+  animation: spin 60s linear infinite;
+}
+
+.hero__ring--inner {
+  inset: 15%;
+  border: 1px solid var(--border);
+}
+
+/* Character frame: holds the character image, or the initials as a fallback */
+.hero__character {
+  position: absolute;
+  inset: 20%;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--surface);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), var(--shadow);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+}
+
+.hero__character img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.hero__monogram {
+  color: var(--accent);
+  font-family: var(--font-display);
+  font-size: clamp(2.4rem, 5vw, 3.5rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.hero__float {
+  position: absolute;
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  background: var(--bg-raised);
+  box-shadow: var(--shadow);
+  font-size: 0.875rem;
+  font-weight: 600;
+  white-space: nowrap;
+  animation: bob 4s ease-in-out infinite alternate;
+}
+
+/* Speech bubble above the character */
+.hero__bubble {
+  position: absolute;
+  top: -7%;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  width: min(270px, 78%);
+  min-height: 68px;
+  padding: 12px 18px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-card);
+  background: var(--bg-raised);
+  box-shadow: var(--shadow);
+  font-size: 0.925rem;
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: center;
+  transform: translateX(-50%);
+}
+
+/* Tail pointing down at the character */
+.hero__bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  width: 14px;
+  height: 14px;
+  border-right: 1px solid var(--border-strong);
+  border-bottom: 1px solid var(--border-strong);
+  background: var(--bg-raised);
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.hero__bubble-text {
+  animation: pop-in var(--speed) var(--ease) both;
+}
+
+.hero__float--1 {
+  top: 44%;
+  left: -12%;
+}
+
+.hero__float--2 {
+  top: 30%;
+  right: -14%;
+  animation-delay: -1.2s;
+}
+
+.hero__float--3 {
+  bottom: 18%;
+  left: -4%;
+  animation-delay: -2.1s;
+}
+
+.hero__float--4 {
+  right: -8%;
+  bottom: 12%;
+  animation-delay: -3s;
+}
+
+/* Play / stop button for the spoken intro, centred under the character */
+.hero__speak {
+  position: absolute;
+  right: 0;
+  bottom: 3%;
+  left: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.hero__speak .btn--ghost {
+  background: var(--bg-raised);
+}
+
+/* While speaking: the character bobs as if talking and the ring pulses */
+.hero__visual.is-speaking .hero__character img {
+  transform-origin: center bottom;
+  animation: talk 380ms ease-in-out infinite alternate;
+}
+
+.hero__visual.is-speaking .hero__ring--inner {
+  border-color: var(--accent);
+  animation: speak-pulse 1.1s ease-out infinite;
+}
+
+@keyframes talk {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(0, -3px, 0) scale(1.025);
+  }
+}
+
+@keyframes speak-pulse {
+  from {
+    opacity: 0.9;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 0;
+    transform: scale(1.12);
+  }
+}
+
+/* ---------- Tablet and below: single column, compact character ---------- */
+@media (max-width: 959px) {
+  .hero__inner {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .hero__visual {
+    width: min(100%, 300px);
+    margin-top: 28px;
+  }
+
+  /* No room for the floating labels next to a small character */
+  .hero__float {
+    display: none;
+  }
+
+  .hero__bubble {
+    width: 88%;
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero__actions .btn {
+    flex: 1 1 100%;
+  }
+}

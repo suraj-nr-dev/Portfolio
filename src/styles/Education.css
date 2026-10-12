@@ -1,0 +1,159 @@
+.education__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(32px, 5vw, 64px);
+}
+
+.education__column {
+  display: grid;
+  gap: 36px;
+}
+
+.education__degrees {
+  display: grid;
+  gap: 18px;
+}
+
+/* ---------- Degree card ---------- */
+.degree {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  padding: clamp(20px, 3vw, 26px);
+}
+
+.degree__icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  transition: transform var(--speed) var(--ease);
+}
+
+.degree:hover .degree__icon {
+  transform: rotate(-8deg) scale(1.08);
+}
+
+.degree__title {
+  font-size: 1.2rem;
+}
+
+.degree__school {
+  margin-top: 4px;
+  color: var(--text-muted);
+}
+
+.degree__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.degree__score {
+  padding: 3px 12px;
+  border-radius: var(--radius-pill);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+/* ---------- Sub-blocks ---------- */
+.education__subtitle {
+  margin-bottom: 16px;
+  font-size: 1.15rem;
+}
+
+/* ---------- Certifications ---------- */
+.certs {
+  display: grid;
+  gap: 4px;
+}
+
+.certs__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 12px 14px;
+  border-radius: var(--radius-input);
+  position: relative;
+  isolation: isolate;
+  transition: transform var(--speed) var(--ease);
+}
+
+/* Soft highlight behind the row on hover */
+.certs__item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--surface-strong);
+  opacity: 0;
+  transition: opacity var(--speed) var(--ease);
+}
+
+.certs__item:hover {
+  transform: translate3d(6px, 0, 0);
+}
+
+.certs__item:hover::before {
+  opacity: 1;
+}
+
+.certs__item svg {
+  flex-shrink: 0;
+  margin-top: 3px;
+  color: var(--accent);
+}
+
+.certs__name {
+  display: block;
+  font-weight: 600;
+}
+
+.certs__issuer {
+  display: block;
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+/* ---------- Leadership ---------- */
+.leadership {
+  display: grid;
+  gap: 20px;
+}
+
+.leadership__item {
+  padding-left: 18px;
+  border-left: 2px solid var(--accent);
+}
+
+.leadership__title {
+  font-weight: 600;
+}
+
+.leadership__meta {
+  color: var(--accent);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.leadership__description {
+  margin-top: 6px;
+  color: var(--text-muted);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 859px) {
+  .education__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

@@ -1,0 +1,110 @@
+/* Asymmetric 12-column grid: 7/5, 5/7, then a full-width row */
+.skills__grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.skills__item:nth-child(1),
+.skills__item:nth-child(4) {
+  grid-column: span 7;
+}
+
+.skills__item:nth-child(2),
+.skills__item:nth-child(3) {
+  grid-column: span 5;
+}
+
+.skills__item:nth-child(5) {
+  grid-column: span 12;
+}
+
+.skill-card {
+  height: 100%;
+  padding: clamp(20px, 3vw, 28px);
+}
+
+/* The "currently learning" card gets a tinted background */
+.skills__item:nth-child(2) .skill-card {
+  background:
+    radial-gradient(circle at 100% 0%, var(--accent-soft), transparent 65%),
+    var(--surface);
+}
+
+.skill-card__head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.skill-card__icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  background: var(--accent-soft);
+  color: var(--accent);
+  transition: transform var(--speed) var(--ease);
+}
+
+.skill-card:hover .skill-card__icon {
+  transform: rotate(-8deg) scale(1.08);
+}
+
+.skill-card__title {
+  font-size: 1.2rem;
+}
+
+.skill-card__note {
+  color: var(--text-muted);
+  font-size: 0.875rem;
+}
+
+/* Animated bar: a hairline track with an accent fill that draws in */
+.skill-card__bar {
+  position: relative;
+  display: block;
+  height: 2px;
+  margin: 20px 0;
+  overflow: hidden;
+}
+
+.skill-card__bar::before,
+.skill-card__bar::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+}
+
+.skill-card__bar::before {
+  background: var(--border);
+}
+
+.skill-card__bar::after {
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1100ms var(--ease);
+  transition-delay: calc(var(--d, 0ms) + 250ms);
+}
+
+.skills__item.is-visible .skill-card__bar::after {
+  transform: scaleX(1);
+}
+
+/* Chips pop in one by one after their card is revealed.
+   `backwards` keeps them hidden during the delay without locking the
+   transform afterwards, so the hover effect still works. */
+.skills__item.is-visible .chip {
+  animation: pop-in 520ms var(--ease) backwards;
+  animation-delay: calc(var(--d, 0ms) + 260ms + var(--i) * 45ms);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 899px) {
+  .skills__item:nth-child(n) {
+    grid-column: span 12;
+  }
+}

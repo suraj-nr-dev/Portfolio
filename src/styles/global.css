@@ -1,0 +1,549 @@
+/* ==========================================================================
+   GLOBAL STYLES: design tokens, reset, shared utilities, keyframes
+   Edit colours and animation speed in the :root blocks below.
+   ========================================================================== */
+
+/* ---------- Design tokens (dark theme is the default) ---------- */
+:root {
+  /* Fonts */
+  --font-display: 'Outfit', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-body: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* Colours */
+  --bg: #0b0d0f;
+  --bg-raised: #121518;
+  --surface: rgba(255, 255, 255, 0.04);
+  --surface-strong: rgba(255, 255, 255, 0.08);
+  --border: rgba(255, 255, 255, 0.1);
+  --border-strong: rgba(255, 255, 255, 0.2);
+  --text: #edf1ef;
+  --text-muted: #a4ada9;
+  --accent: #3ddc97;
+  --accent-soft: rgba(61, 220, 151, 0.14);
+  --on-accent: #04261a;
+  --danger: #ff8f8f;
+  --nav-bg: rgba(11, 13, 15, 0.64);
+  --shadow: 0 28px 60px -28px rgba(0, 0, 0, 0.75);
+  --blob-opacity: 0.55;
+
+  /* Shape: cards 18px, inputs 12px, interactive elements are pills */
+  --radius-card: 18px;
+  --radius-input: 12px;
+  --radius-pill: 999px;
+
+  /* Animation speed: raise these values to slow everything down */
+  --speed-fast: 180ms;
+  --speed: 420ms;
+  --speed-slow: 820ms;
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --reveal-distance: 28px;
+
+  /* Layout */
+  --container: 1120px;
+  --gutter: 20px;
+  --nav-height: 68px;
+
+  /* Layering scale */
+  --z-backdrop: 0;
+  --z-content: 1;
+  --z-nav: 50;
+  --z-progress: 60;
+  --z-loader: 80;
+  --z-cursor: 90;
+
+  color-scheme: dark;
+}
+
+/* ---------- Light theme overrides ---------- */
+:root[data-theme='light'] {
+  --bg: #f4f6f5;
+  --bg-raised: #ffffff;
+  --surface: rgba(255, 255, 255, 0.74);
+  --surface-strong: #ffffff;
+  --border: rgba(16, 24, 20, 0.12);
+  --border-strong: rgba(16, 24, 20, 0.26);
+  --text: #111715;
+  --text-muted: #48544f;
+  --accent: #04785a;
+  --accent-soft: rgba(4, 120, 90, 0.1);
+  --on-accent: #ffffff;
+  --danger: #b42318;
+  --nav-bg: rgba(244, 246, 245, 0.72);
+  --shadow: 0 28px 50px -30px rgba(16, 40, 30, 0.4);
+  --blob-opacity: 0.3;
+
+  color-scheme: light;
+}
+
+/* ---------- Reset ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: calc(var(--nav-height) + 12px);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+p,
+ul,
+ol,
+dl,
+dd,
+figure {
+  margin: 0;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  border: 0;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--on-accent);
+}
+
+/* Visible keyboard focus everywhere */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+/* Scroll lock while the intro loader is showing */
+html.is-loading {
+  overflow: hidden;
+}
+
+/* ---------- Utilities ---------- */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: calc(var(--z-loader) + 1);
+  padding: 10px 18px;
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+  color: var(--on-accent);
+  font-weight: 600;
+  transform: translateY(-200%);
+  transition: transform var(--speed-fast) var(--ease);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+.container {
+  width: min(var(--container), 100% - var(--gutter) * 2);
+  margin-inline: auto;
+}
+
+main,
+footer {
+  position: relative;
+  z-index: var(--z-content);
+}
+
+/* Sideways reveal offsets must never create a horizontal scrollbar */
+main {
+  overflow-x: clip;
+}
+
+/* ---------- Sections ---------- */
+.section {
+  padding-block: clamp(72px, 10vw, 128px);
+}
+
+.section__head {
+  max-width: 62ch;
+  margin-bottom: clamp(36px, 5vw, 60px);
+}
+
+.section__title {
+  font-size: clamp(2rem, 4.6vw, 3rem);
+}
+
+.section__lead {
+  margin-top: 14px;
+  color: var(--text-muted);
+  font-size: 1.05rem;
+}
+
+/* ---------- Glass card ---------- */
+.card {
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-card);
+  background: var(--surface);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06), var(--shadow);
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+}
+
+/* Accent border that fades in on hover (opacity only) */
+.card::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border: 1px solid var(--accent);
+  border-radius: inherit;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--speed) var(--ease);
+}
+
+.card:hover::after,
+.card:focus-within::after {
+  opacity: 0.55;
+}
+
+/* Cards that lift slightly on hover */
+.card--lift {
+  transition: transform var(--speed) var(--ease);
+}
+
+.card--lift:hover {
+  transform: translateY(-4px);
+}
+
+/* ---------- Chips / tags ---------- */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chip {
+  position: relative;
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.4;
+  isolation: isolate;
+  transition: transform var(--speed-fast) var(--ease);
+}
+
+.chip::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--accent-soft);
+  opacity: 0;
+  transition: opacity var(--speed-fast) var(--ease);
+}
+
+.chip:hover {
+  transform: translateY(-3px) scale(1.04);
+}
+
+.chip:hover::before {
+  opacity: 1;
+}
+
+/* ---------- Text links with an animated underline ---------- */
+.link {
+  position: relative;
+  display: inline-block;
+  font-weight: 600;
+}
+
+.link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform var(--speed) var(--ease);
+}
+
+.link:hover::after,
+.link:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* ---------- Round icon buttons (social links, theme toggle) ---------- */
+.icon-btn {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
+  background: var(--surface);
+  color: var(--text);
+  isolation: isolate;
+  transition: transform var(--speed) var(--ease);
+}
+
+.icon-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  background: var(--accent);
+  opacity: 0;
+  transform: scale(0.6);
+  transition:
+    opacity var(--speed) var(--ease),
+    transform var(--speed) var(--ease);
+}
+
+.icon-btn:hover {
+  transform: translateY(-3px);
+  color: var(--on-accent);
+}
+
+.icon-btn:hover::before {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.icon-btn:active {
+  transform: translateY(-1px) scale(0.96);
+}
+
+/* ---------- Scroll reveal (driven by useScrollReveal) ---------- */
+[data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, var(--reveal-distance), 0);
+  transition:
+    opacity var(--speed-slow) var(--ease),
+    transform var(--speed-slow) var(--ease);
+  transition-delay: var(--d, 0ms);
+}
+
+[data-reveal='left'] {
+  transform: translate3d(calc(var(--reveal-distance) * -1), 0, 0);
+}
+
+[data-reveal='right'] {
+  transform: translate3d(var(--reveal-distance), 0, 0);
+}
+
+[data-reveal='scale'] {
+  transform: scale(0.94);
+}
+
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---------- Floating-shapes backdrop ---------- */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-backdrop);
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.backdrop__blob {
+  position: absolute;
+  border-radius: 50%;
+  opacity: var(--blob-opacity);
+  will-change: transform;
+}
+
+.backdrop__blob--one {
+  top: -18vmax;
+  right: -12vmax;
+  width: 56vmax;
+  height: 56vmax;
+  background: radial-gradient(circle, rgba(61, 220, 151, 0.22), transparent 62%);
+  animation: float-a 22s ease-in-out infinite alternate;
+}
+
+.backdrop__blob--two {
+  bottom: -24vmax;
+  left: -16vmax;
+  width: 60vmax;
+  height: 60vmax;
+  background: radial-gradient(circle, rgba(61, 220, 151, 0.14), transparent 60%);
+  animation: float-b 28s ease-in-out infinite alternate;
+}
+
+.backdrop__blob--three {
+  top: 38%;
+  left: 42%;
+  width: 34vmax;
+  height: 34vmax;
+  background: radial-gradient(circle, rgba(160, 235, 205, 0.1), transparent 60%);
+  animation: float-c 34s ease-in-out infinite alternate;
+}
+
+/* ---------- Keyframes (transform and opacity only) ---------- */
+@keyframes float-a {
+  to {
+    transform: translate3d(-8vmax, 6vmax, 0) scale(1.12);
+  }
+}
+
+@keyframes float-b {
+  to {
+    transform: translate3d(10vmax, -6vmax, 0) scale(0.92);
+  }
+}
+
+@keyframes float-c {
+  to {
+    transform: translate3d(-12vmax, -8vmax, 0) scale(1.2);
+  }
+}
+
+@keyframes bob {
+  from {
+    transform: translate3d(0, -6px, 0);
+  }
+  to {
+    transform: translate3d(0, 6px, 0);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes blink {
+  0%,
+  45% {
+    opacity: 1;
+  }
+  55%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 10px, 0) scale(0.92);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes pulse-ring {
+  from {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(2.6);
+  }
+}
+
+/* ---------- Reduced motion: show everything, move nothing ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    transition-delay: 0ms !important;
+  }
+
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Solid surfaces when the visitor asks for less transparency */
+@media (prefers-reduced-transparency: reduce) {
+  .card {
+    background: var(--bg-raised);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
